@@ -6,6 +6,7 @@
  */
 const get = (list = [], id = 0) => {
     //
+    return list.find( item => item.id===id )
 };
 
 /**
@@ -16,7 +17,11 @@ const get = (list = [], id = 0) => {
  */
 const create = (list = [], entity = null) => {
     //
-};
+    const id = list[list.length - 1].id + 1
+    const newEntity = { ...entity, id }
+    list.push(newEntity)
+    return newEntity
+  };
 
 /**
  * 3. Egy meglévő objektum frissítése a kapott tömbben.
@@ -26,6 +31,15 @@ const create = (list = [], entity = null) => {
  */
 const update = (list = [], entity = {}) => {
     //
+    if (!entity.id) {
+      return false
+    }
+    const index = list.findIndex(item => item.id === entity.id)
+    if (index < 0) {
+      return false
+    }
+    list[index] = { ...list[index], ...entity }
+    return list[index]
 };
 
 /**
@@ -36,8 +50,24 @@ const update = (list = [], entity = {}) => {
  */
 const remove = (list = [], id = 0) => {
     //
+    if (!list.length || list.length === 0 || id === 0) {
+      return false
+    }
+    const index = list.findIndex(item => item.id === id)
+    if (index < 0) {
+      return false
+    }
+    list.splice(index, 1)
+    return true
+  
 };
 
 /**
  * 5. Exportáld ki a négy függvényt, hogy más fájlokból is elérhetőek legyenek.
  */
+ module.exports = {
+  get,
+  create,
+  update,
+  remove
+}
